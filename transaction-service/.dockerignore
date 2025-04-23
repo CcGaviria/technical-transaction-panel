@@ -1,0 +1,13 @@
+target/
+build/
+.idea/
+.vscode/
+logs/
+*.log
+Dockerfile
+docker-compose.yml
+.dockerignore
+*.class
+*.jar
+*.war
+*.ear
