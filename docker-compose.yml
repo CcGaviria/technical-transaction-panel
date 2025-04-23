@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - tenpo-network
+    volumes:
+      - redis-data:/data
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: simon
+      POSTGRES_PASSWORD: simon
+      POSTGRES_DB: transactions_db
+    ports:
+      - "5439:5432"
+    networks:
+      - tenpo-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  transaction-service:
+    build:
+      context: ./transaction-service
+      dockerfile: Dockerfile
+    container_name: transaction-service
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/transactions_db
+      SPRING_DATASOURCE_USERNAME: simon
+      SPRING_DATASOURCE_PASSWORD: simon
+      SPRING_REDIS_HOST: redis
+    ports:
+      - "8080:8080"
+    networks:
+      - tenpo-network
+  transaction-frontend:
+    build:
+      context: ./transaction-frontend
+      dockerfile: Dockerfile
+    container_name: transaction-frontend
+    restart: always
+    depends_on:
+      - transaction-service
+    ports:
+      - "80:80"
+    networks:
+      - tenpo-network
+networks:
+  tenpo-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  postgres-data:

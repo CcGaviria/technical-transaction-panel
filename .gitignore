@@ -26,7 +26,6 @@ HELP.md
 target/
 build/
 .apt_generated/
-.mvn/
 !**/src/main/**/target/
 !**/src/test/**/target/
 !**/src/main/**/build/
