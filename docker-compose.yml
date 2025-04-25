@@ -28,9 +28,10 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   transaction-service:
-    build:
-      context: ./transaction-service
-      dockerfile: Dockerfile
+    image: ccgo29/transaction-service:local
+    # build:
+    #   context: ./transaction-service
+    #   dockerfile: Dockerfile
     container_name: transaction-service
     restart: always
     depends_on:
@@ -46,9 +47,10 @@ services:
     networks:
       - tenpo-network
   transaction-frontend:
-    build:
-      context: ./transaction-frontend
-      dockerfile: Dockerfile
+    image: ccgo29/transaction-frontend:local
+    # build:
+    #   context: ./transaction-frontend
+    #   dockerfile: Dockerfile
     container_name: transaction-frontend
     restart: always
     depends_on:
